@@ -24,7 +24,7 @@ const table = new DataTable("#robots", {
       },
     },
   ],
-  // Last ping (newest first), then hostname, then wireless IP
+  // Last ping (newest first), then hostname, then private IP
   order: [[4, "desc"], [0, "asc"], [1, "asc"]],
 });
 

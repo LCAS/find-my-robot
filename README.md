@@ -10,7 +10,7 @@ Robots report their hostname and IPv4 addresses to a small Flask app, which show
 
 | Route | Description |
 |---|---|
-| `GET /` | Web page: filterable table (25 rows per page), sorted by last ping, then name, then wireless IP. Supports light and dark mode. |
+| `GET /` | Web page: filterable table (25 rows per page), sorted by last ping, then name, then private IP. Supports light and dark mode. |
 | `GET /api/robots` | JSON list of robots. |
 | `POST /api/ping` | Robots update their record. Body: `{"name": "Bob", "privateIP": "10.0.0.0", "publicIP": "5.5.5.5"}` |
 

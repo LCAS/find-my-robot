@@ -89,7 +89,7 @@ table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb,
 /* Mobile: smaller margins, stacked controls, one card per robot */
 @media (max-width: 640px) {
   body { margin: 0.75rem; }
-  h1 { font-size: 1.5rem; }
+  h1 { font-size: 1.5rem; text-align: center; margin-bottom: 1rem; }
 
   div.dt-container .dt-layout-row { flex-direction: column; align-items: stretch; gap: 0.5rem; }
   div.dt-container .dt-search input { width: 70%; }
@@ -123,7 +123,7 @@ table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb,
     color: var(--muted);
   }
   table.dataTable > tbody > tr > td:nth-child(1)::before { content: "Name"; }
-  table.dataTable > tbody > tr > td:nth-child(2)::before { content: "Wireless IP"; }
+  table.dataTable > tbody > tr > td:nth-child(2)::before { content: "Private IP"; }
   table.dataTable > tbody > tr > td:nth-child(3)::before { content: "Public IP"; }
   table.dataTable > tbody > tr > td:nth-child(4)::before { content: "Location"; }
   table.dataTable > tbody > tr > td:nth-child(5)::before { content: "Last Ping"; }
