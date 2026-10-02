@@ -1,8 +1,10 @@
-# find-my-robot
+# 🤖 Find my Robot
 
-IP Tracker is Back... Find the robots local IP address.
+IP Tracker is Back... This is a tool to find robots local IP address's.
 
-Robots report their hostname and IP addresses to a small Flask app, which shows them in a filterable table with a geo-located public IP and a colour-coded last-ping time.
+The live version of this is available at [FindMyRobot.services.lcas.group](https://findmyrobot.services.lcas.group)
+
+Robots report their hostname and IPv4 addresses to a small Flask app, which shows them in a filterable table with a geo-located public IP and a colour-coded last-ping time.
 
 ## Routes
 

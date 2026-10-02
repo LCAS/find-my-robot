@@ -23,7 +23,7 @@ def lookup_location(ip):
         )
         data = r.json()
         if data.get("status") != "success":
-            return None
+            return "Unknown Location (Error)"
         return ", ".join(p for p in (data.get("city"), data.get("regionName"), data.get("country")) if p)
     except (requests.RequestException, ValueError):
-        return None
+        return "Unknown Location (Error)"

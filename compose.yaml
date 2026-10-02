@@ -9,6 +9,8 @@ services:
       - "3464:3464"
     volumes:
       - fmr-data:/data
+    environment:
+      - RETENTION_DAYS=14
 
 volumes:
   fmr-data:
