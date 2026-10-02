@@ -6,7 +6,6 @@ from ip_tools import is_valid_ip, lookup_location
 app = Flask(__name__)
 app.teardown_appcontext(model.close_db)
 
-
 @app.get("/")
 def index():
     return render_template("index.html")

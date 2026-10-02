@@ -7,12 +7,13 @@
   <title>Find my Robot</title>
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
 </head>
 <body>
-  <h1>Find my Robot</h1>
+  <h1>🤖 Find my Robot</h1>
   <table id="robots" class="display" style="width:100%">
     <thead>
-      <tr><th>Name</th><th>Wireless IP Address</th><th>Public IP Address</th><th>Location</th><th>Last Ping</th></tr>
+      <tr><th>Name</th><th>Private IPv4 Address</th><th>Public IPv4 Address</th><th>Location</th><th>Last Ping</th></tr>
     </thead>
   </table>
 

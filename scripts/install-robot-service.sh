@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # Installs a systemd timer on this robot that reports its hostname and IPs to Find my Robot.
-# Usage: sudo ./install-robot-service.sh [server-url] [interval-minutes]
+# Usage: sudo ./install-robot-service.sh [server-url] [interval-minutes] [robot-name]
+# The reported name defaults to the system hostname; override with the third argument
+# or the ROBOT_NAME environment variable.
 set -euo pipefail
 
 SERVER_URL="${1:-https://findmyrobot.services.lcas.group}"
 INTERVAL_MIN="${2:-5}"
+ROBOT_NAME="${3:-${ROBOT_NAME:-$(hostname -s)}}"
 
 if [[ $EUID -ne 0 ]]; then
   echo "Run as root: sudo $0" >&2
@@ -17,7 +20,7 @@ cat > /usr/local/bin/find-my-robot-ping <<'EOF'
 set -euo pipefail
 SERVER_URL="$1"
 
-name="$(hostname -s)"
+name="${2:-$(hostname -s)}"
 # Source address of the default route, i.e. the IP other machines on the LAN reach us on
 private_ip="$(ip -4 route get 1.1.1.1 | sed -n 's/.* src \([0-9.]*\).*/\1/p' | head -n1)"
 public_ip="$(curl -fsS --max-time 10 https://api.ipify.org)"
@@ -36,7 +39,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/find-my-robot-ping ${SERVER_URL}
+ExecStart=/usr/local/bin/find-my-robot-ping ${SERVER_URL} ${ROBOT_NAME}
 EOF
 
 cat > /etc/systemd/system/find-my-robot.timer <<EOF
@@ -56,4 +59,4 @@ systemctl daemon-reload
 systemctl enable --now find-my-robot.timer
 systemctl start find-my-robot.service || echo "Initial ping failed; see: journalctl -u find-my-robot.service" >&2
 
-echo "Installed. Pinging ${SERVER_URL} every ${INTERVAL_MIN} min as '$(hostname -s)'."
+echo "Installed. Pinging ${SERVER_URL} every ${INTERVAL_MIN} min as '${ROBOT_NAME}'."

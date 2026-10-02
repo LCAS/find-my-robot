@@ -1,14 +1,16 @@
-# find-my-robot
+# 🤖 Find my Robot
 
-IP Tracker is Back... Find the robots local IP address.
+IP Tracker is Back... This is a tool to find robots local IP address's.
 
-Robots report their hostname and IP addresses to a small Flask app, which shows them in a filterable table with a geo-located public IP and a colour-coded last-ping time.
+The live version of this is available at [FindMyRobot.services.lcas.group](https://findmyrobot.services.lcas.group)
+
+Robots report their hostname and IPv4 addresses to a small Flask app, which shows them in a filterable table with a geo-located public IP and a colour-coded last-ping time.
 
 ## Routes
 
 | Route | Description |
 |---|---|
-| `GET /` | Web page: filterable table (25 rows per page), sorted by last ping, then name, then wireless IP. Supports light and dark mode. |
+| `GET /` | Web page: filterable table (25 rows per page), sorted by last ping, then name, then private IP. Supports light and dark mode. |
 | `GET /api/robots` | JSON list of robots. |
 | `POST /api/ping` | Robots update their record. Body: `{"name": "Bob", "privateIP": "10.0.0.0", "publicIP": "5.5.5.5"}` |
 
@@ -33,6 +35,8 @@ uv run app.py
 ```
 
 Then open http://localhost:3464. Data is stored in `robots.db` (override with `DB_PATH`).
+
+Robots not seen for 14 days are deleted automatically (override with `RETENTION_DAYS`).
 
 ## Container
 
