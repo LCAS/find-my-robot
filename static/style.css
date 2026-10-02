@@ -85,3 +85,46 @@ table.dataTable > tbody > tr.row-green > * { background-color: color-mix(in srgb
 table.dataTable > tbody > tr.row-orange > * { background-color: color-mix(in srgb, var(--orange) 25%, transparent); }
 table.dataTable > tbody > tr.row-red > * { background-color: color-mix(in srgb, var(--red) 25%, transparent); }
 table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb, var(--grey) 25%, transparent); }
+
+/* Mobile: smaller margins, stacked controls, one card per robot */
+@media (max-width: 640px) {
+  body { margin: 0.75rem; }
+  h1 { font-size: 1.5rem; }
+
+  div.dt-container .dt-layout-row { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  div.dt-container .dt-search input { width: 70%; }
+  div.dt-container .dt-paging { text-align: center; }
+
+  table.dataTable thead { display: none; }
+  table.dataTable, table.dataTable tbody, table.dataTable tr, table.dataTable td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  table.dataTable > tbody > tr {
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  table.dataTable > tbody > tr > td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0.75rem;
+    text-align: right;
+    word-break: break-word;
+    border: 0;
+  }
+  table.dataTable > tbody > tr > td::before {
+    font-weight: 600;
+    text-align: left;
+    flex: none;
+    color: var(--muted);
+  }
+  table.dataTable > tbody > tr > td:nth-child(1)::before { content: "Name"; }
+  table.dataTable > tbody > tr > td:nth-child(2)::before { content: "Wireless IP"; }
+  table.dataTable > tbody > tr > td:nth-child(3)::before { content: "Public IP"; }
+  table.dataTable > tbody > tr > td:nth-child(4)::before { content: "Location"; }
+  table.dataTable > tbody > tr > td:nth-child(5)::before { content: "Last Ping"; }
+}
