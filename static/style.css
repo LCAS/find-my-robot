@@ -80,3 +80,8 @@ div.dt-container .dt-paging .dt-paging-button.disabled {
 .dot.orange { background: var(--orange); }
 .dot.red { background: var(--red); }
 .dot.grey { background: var(--grey); }
+
+table.dataTable > tbody > tr.row-green > * { background-color: color-mix(in srgb, var(--green) 25%, transparent); }
+table.dataTable > tbody > tr.row-orange > * { background-color: color-mix(in srgb, var(--orange) 25%, transparent); }
+table.dataTable > tbody > tr.row-red > * { background-color: color-mix(in srgb, var(--red) 25%, transparent); }
+table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb, var(--grey) 25%, transparent); }

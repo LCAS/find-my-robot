@@ -7,3 +7,8 @@ services:
     restart: unless-stopped
     ports:
       - "3464:3464"
+    volumes:
+      - fmr-data:/data
+
+volumes:
+  fmr-data:

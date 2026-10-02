@@ -10,6 +10,7 @@ function pingColor(iso) {
 const table = new DataTable("#robots", {
   ajax: { url: "/api/robots", dataSrc: "" },
   pageLength: 25,
+  createdRow: (row, data) => row.classList.add("row-" + pingColor(data.lastPing)),
   columns: [
     { data: "name" },
     { data: "privateIP" },
@@ -19,7 +20,7 @@ const table = new DataTable("#robots", {
       data: "lastPing",
       render: (d, type) => {
         if (type !== "display") return d;
-        return `<span class="dot ${pingColor(d)}"></span>${new Date(d).toLocaleString()}`;
+        return `${new Date(d).toLocaleString()}`;
       },
     },
   ],
@@ -27,4 +28,4 @@ const table = new DataTable("#robots", {
   order: [[4, "desc"], [0, "asc"], [1, "asc"]],
 });
 
-setInterval(() => table.ajax.reload(null, false), 30000);
+setInterval(() => table.ajax.reload(null, false), 5000);
