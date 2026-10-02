@@ -34,6 +34,8 @@ uv run app.py
 
 Then open http://localhost:3464. Data is stored in `robots.db` (override with `DB_PATH`).
 
+Robots not seen for 14 days are deleted automatically (override with `RETENTION_DAYS`).
+
 ## Container
 
 ```

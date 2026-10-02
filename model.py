@@ -1,10 +1,11 @@
 import os
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from flask import g
 
 DB_PATH = os.environ.get("DB_PATH", "robots.db")
+RETENTION_DAYS = int(os.environ.get("RETENTION_DAYS", "14"))
 
 
 def get_db():
@@ -33,7 +34,16 @@ def init_db():
         )
 
 
+def purge_stale_robots():
+    """Delete robots not seen within RETENTION_DAYS (last_ping is ISO-8601 UTC, so it sorts as text)."""
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=RETENTION_DAYS)).isoformat()
+    db = get_db()
+    db.execute("DELETE FROM robots WHERE last_ping < ?", (cutoff,))
+    db.commit()
+
+
 def list_robots():
+    purge_stale_robots()
     rows = get_db().execute("SELECT * FROM robots ORDER BY name").fetchall()
     return [
         {
