@@ -1,0 +1,82 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --row-hover: #f3f4f6;
+  --input-bg: #ffffff;
+  --green: #2e9e44;
+  --orange: #f59e0b;
+  --red: #dc2626;
+  --grey: #9ca3af;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111827;
+    --fg: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #374151;
+    --row-hover: #1f2937;
+    --input-bg: #1f2937;
+    --green: #4ade80;
+    --orange: #fbbf24;
+    --red: #f87171;
+    --grey: #6b7280;
+  }
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 2rem;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* DataTables overrides so its built-in light styling follows the theme */
+table.dataTable,
+div.dt-container,
+div.dt-container .dt-search,
+div.dt-container .dt-length,
+div.dt-container .dt-info,
+div.dt-container .dt-paging .dt-paging-button {
+  color: var(--fg) !important;
+}
+
+table.dataTable > thead > tr > th,
+table.dataTable > tbody > tr > td {
+  border-color: var(--border);
+}
+
+table.dataTable > tbody > tr {
+  background: transparent;
+}
+
+table.dataTable.hover > tbody > tr:hover > *,
+table.dataTable > tbody > tr:hover > * {
+  box-shadow: inset 0 0 0 9999px var(--row-hover);
+}
+
+div.dt-container input,
+div.dt-container select {
+  background: var(--input-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+div.dt-container .dt-paging .dt-paging-button.disabled {
+  color: var(--muted) !important;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  margin-right: 0.5em;
+}
+.dot.green { background: var(--green); }
+.dot.orange { background: var(--orange); }
+.dot.red { background: var(--red); }
+.dot.grey { background: var(--grey); }

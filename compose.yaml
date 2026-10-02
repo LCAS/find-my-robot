@@ -1,0 +1,9 @@
+name: "find-my-robot"
+
+services:
+  fmr-app:
+    image: ghcr.io/lcas/find-my-robot:latest
+    container_name: find-my-robot
+    restart: unless-stopped
+    ports:
+      - "3464:3464"
