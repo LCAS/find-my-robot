@@ -86,7 +86,42 @@ div.dt-container .dt-paging .dt-paging-button.disabled {
   height: 20px;
   object-fit: contain;
   vertical-align: middle;
-  margin-left: 0.35rem;
+  margin-left: 0.5rem;
+}
+
+.ip-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ip-cell code {
+  line-height: 1.2;
+}
+
+.copy-ip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.copy-ip:hover {
+  opacity: 1;
+}
+
+.copy-ip:hover {
+  opacity: 1;
+}
+
+code {
+  vertical-align: middle;
+  line-height: 1;
 }
 
 table.dataTable > tbody > tr.row-green > * { background-color: color-mix(in srgb, var(--green) 25%, transparent); }
