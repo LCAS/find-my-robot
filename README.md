@@ -59,6 +59,7 @@ Defaults are `https://findmyrobot.services.lcas.group` and 5 minutes, so leave t
 
 - name: the robot's short hostname
 - privateIP: source address of the default route
-- publicIP: from `https://api.ipify.org`
+- publicIP: from `https://ipinfo.io`
+- asn: from `https://ipinfo.io`
 
 Check status with `systemctl list-timers find-my-robot.timer` and `journalctl -u find-my-robot.service`.

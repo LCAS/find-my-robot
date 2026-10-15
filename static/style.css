@@ -81,6 +81,14 @@ div.dt-container .dt-paging .dt-paging-button.disabled {
 .dot.red { background: var(--red); }
 .dot.grey { background: var(--grey); }
 
+.asn-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+}
+
 table.dataTable > tbody > tr.row-green > * { background-color: color-mix(in srgb, var(--green) 25%, transparent); }
 table.dataTable > tbody > tr.row-orange > * { background-color: color-mix(in srgb, var(--orange) 25%, transparent); }
 table.dataTable > tbody > tr.row-red > * { background-color: color-mix(in srgb, var(--red) 25%, transparent); }

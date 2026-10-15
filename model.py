@@ -29,9 +29,16 @@ def init_db():
                 private_ip TEXT NOT NULL,
                 public_ip TEXT NOT NULL,
                 location TEXT,
+                asn TEXT,
+                ipinfo_checked INTEGER NOT NULL DEFAULT 0,
                 last_ping TEXT NOT NULL
             )"""
         )
+        columns = {row[1] for row in db.execute("PRAGMA table_info(robots)")}
+        if "asn" not in columns:
+            db.execute("ALTER TABLE robots ADD COLUMN asn TEXT")
+        if "ipinfo_checked" not in columns:
+            db.execute("ALTER TABLE robots ADD COLUMN ipinfo_checked INTEGER NOT NULL DEFAULT 0")
 
 
 def purge_stale_robots():
@@ -51,6 +58,7 @@ def list_robots():
             "privateIP": r["private_ip"],
             "publicIP": r["public_ip"],
             "location": r["location"],
+            "asn": r["asn"],
             "lastPing": r["last_ping"],
         }
         for r in rows
@@ -61,16 +69,18 @@ def get_robot(name):
     return get_db().execute("SELECT * FROM robots WHERE name = ?", (name,)).fetchone()
 
 
-def upsert_robot(name, private_ip, public_ip, location):
+def upsert_robot(name, private_ip, public_ip, location, asn):
     db = get_db()
     db.execute(
-        """INSERT INTO robots (name, private_ip, public_ip, location, last_ping)
-           VALUES (?, ?, ?, ?, ?)
+        """INSERT INTO robots (name, private_ip, public_ip, location, asn, ipinfo_checked, last_ping)
+           VALUES (?, ?, ?, ?, ?, 1, ?)
            ON CONFLICT(name) DO UPDATE SET
              private_ip = excluded.private_ip,
              public_ip = excluded.public_ip,
              location = excluded.location,
+             asn = excluded.asn,
+             ipinfo_checked = 1,
              last_ping = excluded.last_ping""",
-        (name, private_ip, public_ip, location, datetime.now(timezone.utc).isoformat()),
+        (name, private_ip, public_ip, location, asn, datetime.now(timezone.utc).isoformat()),
     )
     db.commit()

@@ -19,20 +19,32 @@ def flag_emoji(country_code):
     return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in country_code.upper())
 
 
-def lookup_location(ip):
-    """Query ip-api.com (free, no key) and return e.g. '🇬🇧 Lincoln, England'."""
+def lookup_ip_info(ip):
+    """Query ipinfo.io once and return the formatted location and numeric ASN."""
     try:
         if ipaddress.ip_address(ip).is_private:
-            return f"{UNKNOWN_FLAG} Private network"
-        r = requests.get(
-            f"http://ip-api.com/json/{ip}",
-            params={"fields": "status,city,regionName,countryCode"},
+            return f"{UNKNOWN_FLAG} Private network", None
+
+        response = requests.get(
+            f"https://ipinfo.io/{ip}/json",
             timeout=3,
         )
-        data = r.json()
-        if data.get("status") != "success":
-            return f"{UNKNOWN_FLAG} Unknown"
-        place = ", ".join(p for p in (data.get("city"), data.get("regionName")) if p)
-        return f"{flag_emoji(data['countryCode'])} {place or 'Unknown'}"
+        response.raise_for_status()
+        data = response.json()
+
+        country_code = data.get("country")
+        if country_code:
+            place = ", ".join(
+                p for p in (data.get("city"), data.get("region")) if p
+            )
+            location = f"{flag_emoji(country_code)} {place or 'Unknown'}"
+        else:
+            location = f"{UNKNOWN_FLAG} Unknown"
+
+        org = data.get("org", "")
+        as_number = org.split(maxsplit=1)[0] if org else ""
+        asn = as_number[2:] if as_number.startswith("AS") and as_number[2:].isdigit() else None
+        return location, asn
+
     except (requests.RequestException, ValueError, KeyError):
-        return f"{UNKNOWN_FLAG} Unknown"
+        return f"{UNKNOWN_FLAG} Unknown", None

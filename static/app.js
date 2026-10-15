@@ -14,7 +14,13 @@ const table = new DataTable("#robots", {
   columns: [
     { data: "name" },
     { data: "privateIP" },
-    { data: "publicIP" },
+    {
+      data: "publicIP",
+      render: (ip, type, row) => {
+        if (type !== "display" || !row.asn) return ip;
+        return `<img class="asn-icon" src="https://static.ui.com/asn/${encodeURIComponent(row.asn)}_101x101.png" alt="" title="AS${row.asn}"> ${ip}`;
+      },
+    },
     { data: "location", defaultContent: "Unknown", render: d => d || "Unknown" },
     {
       data: "lastPing",

@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 
 import model
-from ip_tools import is_valid_ip, lookup_location
+from ip_tools import is_valid_ip, lookup_ip_info
 
 app = Flask(__name__)
 app.teardown_appcontext(model.close_db)
@@ -27,12 +27,16 @@ def parse_ping(data):
     return name, private_ip, public_ip
 
 
-def resolve_location(name, public_ip):
-    """Reuse the stored location unless the public IP changed or was never resolved."""
+def resolve_ip_info(name, public_ip):
+    """Reuse stored ipinfo data unless the IP changed or needs migrating."""
     existing = model.get_robot(name)
-    if existing and existing["public_ip"] == public_ip and existing["location"]:
-        return existing["location"]
-    return lookup_location(public_ip)
+    if (
+        existing
+        and existing["public_ip"] == public_ip
+        and existing["ipinfo_checked"]
+    ):
+        return existing["location"], existing["asn"]
+    return lookup_ip_info(public_ip)
 
 
 @app.post("/api/ping")
@@ -42,8 +46,8 @@ def ping():
     except ValueError as e:
         return jsonify(error=str(e)), 400
 
-    location = resolve_location(name, public_ip)
-    model.upsert_robot(name, private_ip, public_ip, location)
+    location, asn = resolve_ip_info(name, public_ip)
+    model.upsert_robot(name, private_ip, public_ip, location, asn)
     return jsonify(status="ok")
 
 
