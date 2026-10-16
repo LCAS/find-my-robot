@@ -172,12 +172,12 @@ table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb,
   table.dataTable > tbody > tr > td:nth-child(5)::before { content: "Last Ping"; }
 }
 
-.toolbar { margin: 0 0 1rem; }
 .button {
   display: inline-block;
-  padding: 0.4rem 0.8rem;
+  margin-left: 1rem;
+  padding: 5px 10px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   color: var(--fg);
   background: var(--input-bg);
   text-decoration: none;

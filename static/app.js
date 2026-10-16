@@ -44,19 +44,28 @@ function currentFilter() {
   return new URLSearchParams(location.search).get("filter") ?? "";
 }
 
-function robotsUrl() {
-  const f = currentFilter();
-  return f ? "/api/robots?filter=" + encodeURIComponent(f) : "/api/robots";
+function inventoryButton() {
+  const link = document.createElement("a");
+  link.id = "download-inventory";
+  link.className = "button";
+  link.href = "/api/inventory";
+  link.download = "inventory.yml";
+  link.textContent = "Save as Ansible Inventory";
+  return link;
 }
 
 function updateDownloadLink() {
   const f = currentFilter();
-  document.getElementById("download-inventory").href =
+  const link = document.getElementById("download-inventory");
+  if (link) link.href =
     f ? "/api/inventory?filter=" + encodeURIComponent(f) : "/api/inventory";
 }
 
 const table = new DataTable("#robots", {
-  ajax: { url: robotsUrl(), dataSrc: "" },
+  ajax: { url: "/api/robots", dataSrc: "" },
+  layout: {
+    topStart: ["pageLength", inventoryButton],
+  },
   search: { search: currentFilter() },
   pageLength: 25,
   createdRow: (row, data) => row.classList.add("row-" + pingColor(data.lastPing)),
