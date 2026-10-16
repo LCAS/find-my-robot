@@ -1,4 +1,5 @@
 import json
+import yaml
 
 from flask import Flask, Response, jsonify, render_template, request
 
@@ -28,20 +29,13 @@ def filter_robots(robots, query):
 @app.get("/api/inventory")
 def inventory():
     robots = filter_robots(model.list_robots(), request.args.get("filter"))
-    lines = ["all:", "  hosts:"]
-    for r in robots:
-        lines.append(f"    {json.dumps(r['name'])}:")
-        lines.append(f"      ansible_host: {json.dumps(r['privateIP'])}")
-    body = "\n".join(lines) + "\n"
-    if not robots:
-        body = "all:\n  hosts: {}\n"
+    hosts = {r["name"]: {"ansible_host": r["privateIP"]} for r in robots}
     return Response(
-        body,
+        yaml.safe_dump({"all": {"hosts": hosts}}, sort_keys=False),
         mimetype="text/yaml",
         headers={"Content-Disposition": 'attachment; filename="inventory.yml"'},
     )
-
-
+    
 def parse_ping(data):
     """Return (name, private_ip, public_ip), or raise ValueError with a client-facing message."""
     fields = [data.get(key) for key in ("name", "privateIP", "publicIP")]

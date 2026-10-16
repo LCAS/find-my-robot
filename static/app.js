@@ -108,7 +108,12 @@ const table = new DataTable("#robots", {
                 </span>`;
       },
     },
-    { data: "location", defaultContent: "Unknown", render: d => d || "Unknown" },
+    {
+      data: "location",
+      defaultContent: "Unknown",
+      searchable: false,
+      render: d => d || "Unknown",
+    },
     {
       data: "lastPing",
       render: (d, type) => {
