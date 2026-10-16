@@ -171,3 +171,15 @@ table.dataTable > tbody > tr.row-grey > * { background-color: color-mix(in srgb,
   table.dataTable > tbody > tr > td:nth-child(4)::before { content: "Location"; }
   table.dataTable > tbody > tr > td:nth-child(5)::before { content: "Last Ping"; }
 }
+
+.toolbar { margin: 0 0 1rem; }
+.button {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  background: var(--input-bg);
+  text-decoration: none;
+}
+.button:hover { background: var(--row-hover); }

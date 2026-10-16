@@ -40,8 +40,24 @@ document.addEventListener("click", async (event) => {
   }
 });
 
+function currentFilter() {
+  return new URLSearchParams(location.search).get("filter") ?? "";
+}
+
+function robotsUrl() {
+  const f = currentFilter();
+  return f ? "/api/robots?filter=" + encodeURIComponent(f) : "/api/robots";
+}
+
+function updateDownloadLink() {
+  const f = currentFilter();
+  document.getElementById("download-inventory").href =
+    f ? "/api/inventory?filter=" + encodeURIComponent(f) : "/api/inventory";
+}
+
 const table = new DataTable("#robots", {
-  ajax: { url: "/api/robots", dataSrc: "" },
+  ajax: { url: robotsUrl(), dataSrc: "" },
+  search: { search: currentFilter() },
   pageLength: 25,
   createdRow: (row, data) => row.classList.add("row-" + pingColor(data.lastPing)),
   columns: [
@@ -97,3 +113,15 @@ const table = new DataTable("#robots", {
 });
 
 setInterval(() => table.ajax.reload(null, false), 5000);
+
+updateDownloadLink();
+
+// Keep the URL's ?filter= in sync with the search box
+table.on("search.dt", () => {
+  const value = table.search();
+  const url = new URL(location.href);
+  if (value) url.searchParams.set("filter", value);
+  else url.searchParams.delete("filter");
+  history.replaceState(null, "", url);
+  updateDownloadLink();
+});
