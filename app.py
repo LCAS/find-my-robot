@@ -31,7 +31,7 @@ def inventory():
     robots = filter_robots(model.list_robots(), request.args.get("filter"))
     hosts = {r["name"]: {"ansible_host": r["privateIP"]} for r in robots}
     return Response(
-        yaml.safe_dump({"all": {"hosts": hosts}}, sort_keys=False),
+        yaml.safe_dump({"all": {"hosts": hosts, "ansible_user": "admin", "ansible_password": "hunter2"}}, sort_keys=False),
         mimetype="text/yaml",
         headers={"Content-Disposition": 'attachment; filename="inventory.yml"'},
     )
