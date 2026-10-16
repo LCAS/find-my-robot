@@ -40,8 +40,33 @@ document.addEventListener("click", async (event) => {
   }
 });
 
+function currentFilter() {
+  return new URLSearchParams(location.search).get("filter") ?? "";
+}
+
+function inventoryButton() {
+  const link = document.createElement("a");
+  link.id = "download-inventory";
+  link.className = "button";
+  link.href = "/api/inventory";
+  link.download = "inventory.yml";
+  link.textContent = "Save as Ansible Inventory";
+  return link;
+}
+
+function updateDownloadLink() {
+  const f = currentFilter();
+  const link = document.getElementById("download-inventory");
+  if (link) link.href =
+    f ? "/api/inventory?filter=" + encodeURIComponent(f) : "/api/inventory";
+}
+
 const table = new DataTable("#robots", {
   ajax: { url: "/api/robots", dataSrc: "" },
+  layout: {
+    topStart: ["pageLength", inventoryButton],
+  },
+  search: { search: currentFilter() },
   pageLength: 25,
   createdRow: (row, data) => row.classList.add("row-" + pingColor(data.lastPing)),
   columns: [
@@ -83,7 +108,12 @@ const table = new DataTable("#robots", {
                 </span>`;
       },
     },
-    { data: "location", defaultContent: "Unknown", render: d => d || "Unknown" },
+    {
+      data: "location",
+      defaultContent: "Unknown",
+      searchable: false,
+      render: d => d || "Unknown",
+    },
     {
       data: "lastPing",
       render: (d, type) => {
@@ -97,3 +127,15 @@ const table = new DataTable("#robots", {
 });
 
 setInterval(() => table.ajax.reload(null, false), 5000);
+
+updateDownloadLink();
+
+// Keep the URL's ?filter= in sync with the search box
+table.on("search.dt", () => {
+  const value = table.search();
+  const url = new URL(location.href);
+  if (value) url.searchParams.set("filter", value);
+  else url.searchParams.delete("filter");
+  history.replaceState(null, "", url);
+  updateDownloadLink();
+});

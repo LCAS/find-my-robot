@@ -1,4 +1,7 @@
-from flask import Flask, jsonify, render_template, request
+import json
+import yaml
+
+from flask import Flask, Response, jsonify, render_template, request
 
 import model
 from ip_tools import is_valid_ip, lookup_ip_info
@@ -13,9 +16,26 @@ def index():
 
 @app.get("/api/robots")
 def robots():
-    return jsonify(model.list_robots())
+    return jsonify(filter_robots(model.list_robots(), request.args.get("filter")))
 
 
+def filter_robots(robots, query):
+    """Case-insensitive substring match on name."""
+    query = (query or "").strip().lower()
+    if not query:
+        return robots
+    return [r for r in robots if query in str(r["name"] or "").lower()]
+
+@app.get("/api/inventory")
+def inventory():
+    robots = filter_robots(model.list_robots(), request.args.get("filter"))
+    hosts = {r["name"]: {"ansible_host": r["privateIP"]} for r in robots}
+    return Response(
+        yaml.safe_dump({"all": {"hosts": hosts}}, sort_keys=False),
+        mimetype="text/yaml",
+        headers={"Content-Disposition": 'attachment; filename="inventory.yml"'},
+    )
+    
 def parse_ping(data):
     """Return (name, private_ip, public_ip), or raise ValueError with a client-facing message."""
     fields = [data.get(key) for key in ("name", "privateIP", "publicIP")]

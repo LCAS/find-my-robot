@@ -219,3 +219,4 @@ __marimo__/
 robots.db
 .venv/
 __pycache__/
+test.sh
