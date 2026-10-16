@@ -19,15 +19,11 @@ def robots():
 
 
 def filter_robots(robots, query):
-    """Case-insensitive substring match (%query%) on name, IPs and location."""
+    """Case-insensitive substring match on name."""
     query = (query or "").strip().lower()
     if not query:
         return robots
-    return [
-        r for r in robots
-        if any(query in str(r[k] or "").lower() for k in ("name", "privateIP", "publicIP", "location"))
-    ]
-
+    return [r for r in robots if query in str(r["name"] or "").lower()]
 
 @app.get("/api/inventory")
 def inventory():
